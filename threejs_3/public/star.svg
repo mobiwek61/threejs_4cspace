@@ -1,0 +1,15 @@
+<!-- <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="40" height="40" fill="white"/>
+  <circle cx="20" cy="20" r="16" fill="red"/>
+</svg> -->
+
+<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="40" height="40" fill="white"/>
+  <polygon fill="red" points="20,4 24.9,14.6 36,15.4 27.5,23.2 30.6,34 20,28 9.4,34 12.5,23.2 4,15.4 15.1,14.6"/>
+</svg>
+
+
+<!-- <svg width="40" height="20" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="40" height="40" fill="white"/>
+  <circle cx="20" cy="20" r="16" fill="red"/>
+</svg> -->

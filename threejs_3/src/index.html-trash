@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texture Anisotropy Demo</title>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      canvas { display: block; }
+      a { font-size:2em;}
+    </style>
+  </head>
+  <body >
+    <div id="menuDiv" style="display: flex; flex-direction: row; gap: 5px; font-size:0.7em;" >
+    <!-- <script>
+      // dont use import here because it messes up the parcel web server automatic-upon-save browser refresh functionality.
+      switch (demoID) {
+        case 'demoID-A': import('./index.mjs').then(module => { }); break; -->
+    <script src="./index.mjs" type="module"></script>
+  </body>
+</html>
