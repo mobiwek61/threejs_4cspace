@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 //   plugins: [react()],
 // })
 
-// custom from Copilot for hot reload
+// custom from Copilot for hot reload needed for react on codespace vite project
 export default {
   server: {
     watch: {
