@@ -12,7 +12,7 @@ export class MAT {
 
   static mat2() {
     return new THREE.MeshPhysicalMaterial({
-      color: 0x00ffff,
+      color: 0xff0000,
       metalness: 0.3,
       roughness: 0.3, //clearcoat: 0.5,
       specularIntensity: 5,
