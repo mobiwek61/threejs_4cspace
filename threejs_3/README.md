@@ -1,6 +1,4 @@
 
-**=========================================================
-=========================================================**
 ### The following README created right on this codespace box by:  
 `npm create vite@latest three3b -- --template react-ts`  
 ---------- begin readme segment --------------
