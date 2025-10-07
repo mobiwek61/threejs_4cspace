@@ -5,14 +5,14 @@
 import { sensors } from './util/sensorHelper.ts';
 import { QuatAreFun } from './util/QuatAreFun.ts'
 
-document.querySelector<HTMLDivElement>('#divA')!.innerHTML = 'this is divA'; 
-setDisp('hello2')
+// document.querySelector<HTMLDivElement>('#divA')!.innerHTML = 'this is divA'; 
+// setDisp('hello2')
 setDisp(sensors.xyz())
 function setDisp(str:string) {
   //console.log(str)
   document.querySelector<HTMLDivElement>('#divA')!.innerHTML = 'ff ' + str
 }
-
+setupOrien()
 var sensorOrien:any
 // //var currQuat = useRef(new Quaternion())
 function setupOrien() {
@@ -25,8 +25,9 @@ function setupOrien() {
               var eulAngles:any = QuatAreFun.quatEuler(sensorOrien.quaternion)
               //currQuat.current = sensorOrien.quaternion
               //var filtElev = Math.round(kalmanFilter_ref.current!.update(eulAngles.pitch))
+              setDisp(eulAngles.pitch)
           });
           sensorOrien.start();
-        } catch (ex) {} 
+        } catch (ex) { setDisp(JSON.stringify(ex))} 
       }
 //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
