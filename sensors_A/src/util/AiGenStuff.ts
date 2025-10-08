@@ -1,3 +1,9 @@
+
+function asciiBar2(min:number, max:number, val1:number, val2:number) {
+        return ( val1 + '<br/>' + // val1 + '  kal:' + val2  // + '  ct:' + ct++ + '<br/>' 
+            asciiBar(min, max, val1) + '<br/>' + asciiBar(min, max, val2))
+}
+
 function asciiBar(min: number, max: number, current: number): string {
     const totalWidth = 50; // total characters in the bar
     const clamped = Math.max(min, Math.min(current, max));
@@ -7,4 +13,4 @@ function asciiBar(min: number, max: number, current: number): string {
     // return `[${'='.repeat(filled)}${' '.repeat(empty)}] ${clamped}/${max}`;
     return `[${'='.repeat(filled)}${' '.repeat(empty)}] `;
 }
-export { asciiBar }
+export { asciiBar, asciiBar2 }
