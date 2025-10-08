@@ -15,11 +15,18 @@ function setDisp(str:string) {
 setupOrien()
 var sensorOrien:{ quaternion: Float32Array }
 var kalmanPitch:KalmanFilter, kalmanYaw:KalmanFilter, kalmanRoll:KalmanFilter
+/**
+ * setup motion sensor from web api.
+ * Call this ONCE but no more per page activation. 
+ * It uses addEventListener() to setup callbacks when sensor detect change, 
+ * which typically redraw the page using new orientation.
+ * ref: https://developer.mozilla.org/en-US/docs/Web/API/AbsoluteOrientationSensor
+ */
 function setupOrien() {
         kalmanPitch = KalmanFilter.okDamped()//.slowDamped()
         kalmanYaw = KalmanFilter.okDamped(); kalmanRoll = KalmanFilter.okDamped()
         try {
-          // addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
+          // call addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
           sensorOrien = new AbsoluteOrientationSensor({ frequency: 22, referenceFrame: "device" });
           sensorOrien.addEventListener("reading", () => {
               var eulAngles:any = QuatAreFun.quatEuler(sensorOrien.quaternion)
