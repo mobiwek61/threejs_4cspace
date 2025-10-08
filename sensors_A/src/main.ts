@@ -10,8 +10,7 @@ import { asciiBar, asciiBar2 } from './util/AiGenStuff.ts'
 // setDisp('hello2')
 setDisp(sensors.xyz())
 function setDisp(str:string) {
-  //console.log(str)
-  document.querySelector<HTMLDivElement>('#divA')!.innerHTML = 'ff ' + str
+  document.querySelector<HTMLDivElement>('#divA')!.innerHTML = str
 }
 setupOrien()
 var sensorOrien:{ quaternion: Float32Array }
@@ -27,9 +26,9 @@ function setupOrien() {
               var filtPit = Math.round(kalmanPitch!.update(eulAngles.pitch))
               var filtYaw = Math.round(kalmanYaw!.update(eulAngles.yaw))
               var filtRoll = Math.round(kalmanRoll!.update(eulAngles.roll))
-              setDisp('<br/>pit:' + asciiBar2(0, 200, eulAngles.pitch, filtPit) +
-                      '<br/>yaw:' + asciiBar2(0, 360, eulAngles.yaw, filtYaw) + 
-                      '<br/>roll:' + asciiBar2(0, 140, eulAngles.roll, filtRoll)  )
+              setDisp('<br/>pit:' + asciiBar2(-200, 200, eulAngles.pitch, filtPit) +
+                      '<br/>yaw:' + asciiBar2(-180, 180, eulAngles.yaw, filtYaw) + 
+                      '<br/>roll:' + asciiBar2(-90, 90, eulAngles.roll, filtRoll)  )
                 // + ' sensorOrien3 ' + sensorOrien.toString() )
           });
           sensorOrien.start();
