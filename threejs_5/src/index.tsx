@@ -6,13 +6,13 @@ import { Hamburger } from './util/HamburgerMenu';
 var demoID = new URLSearchParams(window.location.search).get('demoID')
 console.log(demoID)
 var foo = document.querySelector('#menuDiv')
-foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-A", textContent: "demoID-A" }));
-foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=0", textContent: "demoID-B" }));
-foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=16", textContent: "demoID-B" }));
+// foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-A", textContent: "demoID-A" }));
+// foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=0", textContent: "demoID-B" }));
+// foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=16", textContent: "demoID-B" }));
 
 switch (demoID) {
     case 'demoID-A': demoA(); break;
     case 'demoID-B': demoB(); break;  
 }
 
-document.body.appendChild(Hamburger( (ff)=>{ console.log('hi')} ));
+document.body.appendChild(Hamburger( (ff:void)=>{ console.log('hi')} ));

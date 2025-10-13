@@ -4,16 +4,33 @@ import './Hamburger.css';
 function Hamburger(ff: () => void) {
   const container = document.createElement('div');
   container.className = 'hamburger';
-  container.onclick = () => {  ff();  };
+  container.onclick = () => {  ff(); 
+    const popup = document.getElementById('menuA');
+    if (popup) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  };
 
   for (let i = 0; i < 3; i++) {
     const bar = document.createElement('div');
     bar.className = 'bar';
     container.appendChild(bar);
   }
-
+  container.appendChild(Foo());
   return container;
 }
+
+const Foo = () => {
+  const div = document.createElement('div'); div.id = 'menuA';
+  div.style.color = 'white';
+  div.textContent = 'choose item: '; 
+  div.style.display = 'none'
+  div.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-A", textContent: "demoID-A" }));
+  div.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=0", textContent: "demoID-B" }));
+  div.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=16", textContent: "demoID-B" }));
+
+  return div
+};
 
 // Example usage:
 //document.body.appendChild(Hamburger());

@@ -1,12 +1,15 @@
 .hamburger {
   position: fixed; left: 4.5vw; top:4.5vw;
   width: 30px;
-  height: 25px;
-  display: flex;
+  display:flex; gap:8px;
+  /* height: 25px; */
+  /* display: flex; */
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
 }
+
+a { color:yellow }
 
 .bar {
   height: 4px;
