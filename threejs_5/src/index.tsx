@@ -1,5 +1,7 @@
+// these import setup demoA() as demoA.doAllWork() 
 import { doAllWork as demoA } from './demoA.mjs';
 import { doAllWork as demoB } from './demoB.mjs';
+import { Hamburger } from './util/HamburgerMenu';
 
 var demoID = new URLSearchParams(window.location.search).get('demoID')
 console.log(demoID)
@@ -12,3 +14,5 @@ switch (demoID) {
     case 'demoID-A': demoA(); break;
     case 'demoID-B': demoB(); break;  
 }
+
+document.body.appendChild(Hamburger( (ff)=>{ console.log('hi')} ));

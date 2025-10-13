@@ -1,3 +1,9 @@
+
+- demo shows use of textures and surfaces. It shows use of   
+```loadedTexture.anisotropy = 16``` to fix the problem where textures don't show on some surfaces when viewed at a shallow angle.   
+- makes use of primitive menu  
+- its a non-reactjs project  see index.tsx    
+
 npm create vite@latest threejs_5 -- --templ
 ate vanilla-ts
 

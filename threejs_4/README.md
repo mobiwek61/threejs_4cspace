@@ -1,4 +1,8 @@
 
+### this shows 3 spheres with orbiting light. Intended to try out materials and lighting.  
+
+
+
 **=========================================================
 =========================================================**
 ### The following README created right on this codespace box by:  
