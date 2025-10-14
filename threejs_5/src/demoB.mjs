@@ -16,8 +16,8 @@ var textureA
 function doAllWork() {
   console.log('asdfas')
   var aniso = Number.parseInt((Object.fromEntries(new URLSearchParams(window.location.search))).anisotropic);
-  // const newDiv = document.createElement("div");
-  // newDiv.textContent = "aniso=" + aniso;document.body.appendChild(newDiv);
+  const newDiv = document.createElement("div");
+  newDiv.textContent = "aniso=" + aniso;document.body.appendChild(newDiv);
 
   new THREE.TextureLoader().load(
     // another asynchronous function

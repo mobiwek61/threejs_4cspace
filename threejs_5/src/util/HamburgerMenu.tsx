@@ -1,7 +1,8 @@
 // import React from 'react';
 import './Hamburger.css';
 
-function Hamburger(ff: () => void) {
+function Hamburger(ff: () => void, menus:Array) {
+  console.log('asdf')
   const container = document.createElement('div');
   container.className = 'hamburger';
   container.onclick = () => {  ff(); 
@@ -16,19 +17,21 @@ function Hamburger(ff: () => void) {
     bar.className = 'bar';
     container.appendChild(bar);
   }
-  container.appendChild(Foo());
+  container.appendChild(parseMenu(menus));
   return container;
 }
 
-const Foo = () => {
-  const div = document.createElement('div'); div.id = 'menuA';
-  div.style.color = 'white';
-  div.textContent = 'choose item: '; 
-  div.style.display = 'none'
-  div.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-A", textContent: "demoID-A" }));
-  div.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=0", textContent: "demoID-B" }));
-  div.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=16", textContent: "demoID-B" }));
-
+const parseMenu = (links:Array<Object>) => {
+  const div = document.createElement('div'); div.id = 'menuFrame'; div.style.display = 'none'
+  const menuDiv = document.createElement('div'); div.id = 'menuA'; 
+  menuDiv.style.color = 'white'; menuDiv.textContent = 'choose item: '; 
+  /* stack vertically */menuDiv.style.display='flex'; menuDiv.style.flexDirection='column';
+  menuDiv.style.whiteSpace = 'nowrap'; 
+  links.forEach(link => {
+    const anch = document.createElement('a'); anch.style.fontSize = '1.7em';
+    anch.href = link.href;  anch.textContent = link.text; menuDiv.appendChild(anch);
+  });
+  div.appendChild(menuDiv)
   return div
 };
 

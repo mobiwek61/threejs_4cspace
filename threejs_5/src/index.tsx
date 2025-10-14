@@ -4,15 +4,17 @@ import { doAllWork as demoB } from './demoB.mjs';
 import { Hamburger } from './util/HamburgerMenu';
 
 var demoID = new URLSearchParams(window.location.search).get('demoID')
-console.log(demoID)
-var foo = document.querySelector('#menuDiv')
-// foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-A", textContent: "demoID-A" }));
-// foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=0", textContent: "demoID-B" }));
-// foo.appendChild(Object.assign(document.createElement("a"), { href: "?demoID=demoID-B&anisotropic=16", textContent: "demoID-B" }));
+const menuItems = [
+  { href: "?demoID=demoID-A", text: "bbbbdemoID-A" },
+  { href: "?demoID=demoID-B&anisotropic=0", text: "demoID-B" },
+  { href: "?demoID=demoID-B&anisotropic=16", text: "demoID-B" }
+];
 
 switch (demoID) {
     case 'demoID-A': demoA(); break;
     case 'demoID-B': demoB(); break;  
+    default: demoA()
 }
 
-document.body.appendChild(Hamburger( (ff:void)=>{ console.log('hi')} ));
+document.body.appendChild(
+    Hamburger((ff:void)=>{ console.log('hi2')} , menuItems)   )
