@@ -1,5 +1,6 @@
 // import React from 'react';
 import './Hamburger.css';
+import { PopupA } from './PopupA';
 
 function Hamburger(ff: () => void, menus:Array) {
   console.log('asdf')
@@ -18,6 +19,7 @@ function Hamburger(ff: () => void, menus:Array) {
     container.appendChild(bar);
   }
   container.appendChild(parseMenu(menus));
+  //container.appendChild(PopupA())
   return container;
 }
 
