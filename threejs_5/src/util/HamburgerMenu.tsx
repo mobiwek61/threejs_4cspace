@@ -19,7 +19,7 @@ function Hamburger(ff: () => void, menus:Array) {
     container.appendChild(bar);
   }
   container.appendChild(parseMenu(menus));
-  //container.appendChild(PopupA())
+  container.appendChild(PopupA())
   return container;
 }
 
@@ -31,11 +31,21 @@ const parseMenu = (links:Array<Object>) => {
   menuDiv.style.whiteSpace = 'nowrap'; 
   links.forEach(link => {
     const anch = document.createElement('a'); anch.style.fontSize = '1.7em';
-    anch.href = link.href;  anch.textContent = link.text; menuDiv.appendChild(anch);
+    anch.href = link.href;  anch.textContent = link.text; 
+    menuDiv.appendChild(anch);
   });
+  createButton('qr code', () => { console.log('adfasdf')}, menuDiv)
   div.appendChild(menuDiv)
   return div
 };
+
+function createButton(label: string, onClick: () => void, target: HTMLElement = document.body) {
+  const button = document.createElement('button');
+  button.textContent = label; 
+  Object.assign(button.style, { fontSize:'1.9em', color:'#00ffff', width:'fit-content', backgroundColor: 'transparent' });
+  button.onclick = onClick;
+  target.appendChild(button);
+}
 
 // Example usage:
 //document.body.appendChild(Hamburger());
