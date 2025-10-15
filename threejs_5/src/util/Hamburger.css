@@ -9,7 +9,7 @@
   cursor: pointer;
 }
 
-a { color:yellow }
+.anchorStyle { color:yellow; font-size:1.7em; }
 
 .bar {
   height: 4px;

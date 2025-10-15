@@ -30,7 +30,7 @@ const parseMenu = (links:Array<Object>) => {
   /* stack vertically */menuDiv.style.display='flex'; menuDiv.style.flexDirection='column';
   menuDiv.style.whiteSpace = 'nowrap'; 
   links.forEach(link => {
-    const anch = document.createElement('a'); anch.style.fontSize = '1.7em';
+    const anch = document.createElement('a'); anch.className='anchorStyle'; 
     anch.href = link.href;  anch.textContent = link.text; 
     menuDiv.appendChild(anch);
   });
@@ -40,9 +40,9 @@ const parseMenu = (links:Array<Object>) => {
 };
 
 function createButton(label: string, onClick: () => void, target: HTMLElement = document.body) {
-  const button = document.createElement('button');
-  button.textContent = label; 
-  Object.assign(button.style, { fontSize:'1.9em', color:'#00ffff', width:'fit-content', backgroundColor: 'transparent' });
+  const button = document.createElement('a');
+  button.textContent = label; button.className='anchorStyle';
+  //Object.assign(button.style, { width:'fit-content', backgroundColor: 'transparent' });
   button.onclick = onClick;
   target.appendChild(button);
 }
