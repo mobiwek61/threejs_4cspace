@@ -1,15 +1,16 @@
 // these import setup demoA() as demoA.doAllWork() 
 import { doAllWork as demoA } from './demoA.mjs';
 import { doAllWork as demoB } from './demoB.ts';
+import { TwoSpheresWithMovingLight } from './demoC/App.ts'
 // import { PopupA, QrInFrame } from './util/PopupA.ts';
 import { Hamburger } from './util/HamburgerMenu';
 
 var demoID = new URLSearchParams(window.location.search).get('demoID')
 const menuItems = [
-  { href: "?demoID=demoID-A", text: "bbbbdemoID-A" },
+  { href: "?demoID=demoID-A", text: "demoID-A" },
   { href: "?demoID=demoID-B&anisotropic=0", text: "demoID-B" },
   { href: "?demoID=demoID-B&anisotropic=16", text: "demoID-B" },
-  // { href: "?demoID=qrcode", text: "qrcode" }
+  { href: "?demoID=demo_C", text: "demo-C" },
 ];
 
 let frameElem: HTMLElement | null = document.querySelector("#mainDiv");
@@ -17,7 +18,9 @@ let frameElem: HTMLElement | null = document.querySelector("#mainDiv");
 switch (demoID) {
     case 'demoID-A': demoA(); break;
     case 'demoID-B': demoB(frameElem); break;  
-    // case 'qrcode': QrInFrame(frameElem); break;  
+    case 'demo_C': 
+        frameElem?.appendChild(TwoSpheresWithMovingLight()); 
+        break;  
     default: demoA()
 }
 

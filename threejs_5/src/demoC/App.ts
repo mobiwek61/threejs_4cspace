@@ -1,37 +1,25 @@
 // import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { MAT } from "./MyMaterialsNhelpers";
-//import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-////////// this code originally from DeepSeek
 /* manually added to package.json to get intellisense for three.js:
   "@types/three": "^0.178.1" */
-// github codespace A
-export default function TwoSpheresWithMovingLight() {
-  //const mountRef = useRef<HTMLDivElement>(null);
-  const mountCanv:HTMLCanvasElement = document.createElement('HTMLCanvasElement')
+
+function TwoSpheresWithMovingLight() {
+  console.log('as99df')
+  // const mainDiv: HTMLDivElement = document.createElement('div');
+  const mainDiv: HTMLCanvasElement = document.createElement('canvas');
   var renderer: any;
   //var controls:OrbitControls;
   var camera: THREE.PerspectiveCamera;
-  // RIGHT-CLICK STICKY SCROLL
-  useEffect(() => {
-    drawIt();
-    // Cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      //mountRef.current?.removeChild(renderer.domElement);
-      //controls.dispose();
-    };
-  }, []); // "empty array, run only once, after initial render (mount)"
-
-  // Handle window resize
-  function handleResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  
+  // window.addEventListener("resize", handleResize);
+  // function handleResize() {
+  //   camera.aspect = window.innerWidth / window.innerHeight;
+  //   camera.updateProjectionMatrix();
+  //   renderer.setSize(window.innerWidth, window.innerHeight);
+  // }
 
   function drawIt() {
-    if (!mountRef.current) return;
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x87ceeb); // Sky blue background
     scene.fog = new THREE.FogExp2(0x87ceeb, 0.0002);
@@ -56,7 +44,7 @@ export default function TwoSpheresWithMovingLight() {
     camera.position.y = df * 30;
     camera.lookAt(0, 0, 0);
     // how its done in other project. remove appendChild below. crashes! 
-    renderer = new THREE.WebGLRenderer({ canvas:mountRef.current, antialias: true });
+    renderer = new THREE.WebGLRenderer({ canvas:mainDiv, antialias: true });
     // renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -131,11 +119,10 @@ export default function TwoSpheresWithMovingLight() {
       
       renderer.render(scene, camera);
     };
-
-    window.addEventListener("resize", handleResize);
-
     animate();
   }
-
-  return <canvas ref={mountRef} ></canvas>;
+  drawIt()
+  return mainDiv
 }
+
+export { TwoSpheresWithMovingLight }
