@@ -1,7 +1,8 @@
 // import React from 'react';
 import './Hamburger.css';
-import { PopupA } from './PopupA';
+import { QRpopup } from './QRpopup';
 
+var theQR = QRpopup({})
 function Hamburger(ff: () => void, menus:Array) {
   console.log('asdf')
   const container = document.createElement('div');
@@ -19,7 +20,7 @@ function Hamburger(ff: () => void, menus:Array) {
     container.appendChild(bar);
   }
   container.appendChild(parseMenu(menus));
-  container.appendChild(PopupA())
+  container.appendChild(theQR) // the {} removes missing-arg error
   return container;
 }
 
@@ -43,7 +44,9 @@ function createButton(label: string, onClick: () => void, target: HTMLElement = 
   const button = document.createElement('a');
   button.textContent = label; button.className='anchorStyle';
   //Object.assign(button.style, { width:'fit-content', backgroundColor: 'transparent' });
-  button.onclick = onClick;
+  // button.onclick = onClick;
+  button.onclick = () => { theQR.style.display = theQR.style.display === 'block' ? 'none' : 'block' };
+    
   target.appendChild(button);
 }
 

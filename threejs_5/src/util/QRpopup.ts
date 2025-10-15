@@ -6,25 +6,23 @@ import  QRCode  from 'qrcode'
 interface PopupProps {
     isVisible?: boolean;
     txtdesc?: string;
-    callBackCloseMe: () => void;
+    callBackCloseMe?: () => void;
     // somethingElse?: string;
  }
 var rightArrow = 0x25B6;
 // This component is a popup showing description of image, qr button and viewing tips
 // PopupProps is a typescript interface obtained from the bundle
 //    it specifies the parameters given to the popup by the mobiwek framework.
-function PopupA (puprops:PopupProps):HTMLCanvasElement { // , frameElem:HTMLElement|null) {
+function QRpopup (puprops:PopupProps):HTMLCanvasElement { // , frameElem:HTMLElement|null) {
     const qrcanvas = document.createElement("canvas")
     QRCode.toCanvas(qrcanvas, window.location.href, { width: 99 }, 
       function (error:any) { if (error) console.error('error in doQRcode: ' + error);  })
+    qrcanvas.style.display=(puprops.isVisible ? '' : 'none')
     return qrcanvas;
 }
 
-function QrInFrame(frameElem:HTMLElement|null) {
-    frameElem?.appendChild(PopupA())
-}
 
-export { PopupA, QrInFrame }
+export { QRpopup }
     // return (
     //     <div id='divPopupContentRoot' 
     //         style={{
