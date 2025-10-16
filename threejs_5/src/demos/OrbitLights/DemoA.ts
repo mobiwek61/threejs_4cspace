@@ -6,7 +6,6 @@ import { MAT } from "./MyMaterialsNhelpers";
 
 function TwoSpheresWithMovingLight() {
   console.log('as99df')
-  // const mainDiv: HTMLDivElement = document.createElement('div');
   const mainDiv: HTMLCanvasElement = document.createElement('canvas');
   var renderer: any;
   //var controls:OrbitControls;
@@ -122,6 +121,7 @@ function TwoSpheresWithMovingLight() {
     animate();
   }
   drawIt()
+  
   return mainDiv
 }
 

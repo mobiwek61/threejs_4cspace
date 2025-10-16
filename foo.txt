@@ -1,2 +1,0 @@
-this is foo.txt
-in main folder not in project

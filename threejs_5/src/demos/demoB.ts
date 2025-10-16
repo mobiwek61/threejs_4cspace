@@ -13,8 +13,9 @@ function doAllWork(): HTMLElement {
   Object.assign(msg.style, { fontSize:'1.9em', position: 'absolute', bottom: '0', color:'#00ffff' });
   msg.textContent = `aniso from url: ${aniso}`; 
   outerFrameDiv.appendChild(msg);
+  const tspec = params.textureSpec ? params.textureSpec : 'star';
   new THREE.TextureLoader().load(
-    '/star.svg',
+    '\/' + tspec + '.svg', // '/star.svg',
     (loadedTexture: THREE.Texture) => {
       console.log('got it');
       loadedTexture.wrapS = THREE.RepeatWrapping;
@@ -30,6 +31,7 @@ function doAllWork(): HTMLElement {
       console.error('Texture load error:', err);
     }
   );
+  // warning! div does not have content yet, is waiting for texture to load.
   return outerFrameDiv;
 }
 

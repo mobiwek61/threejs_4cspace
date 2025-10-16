@@ -10,9 +10,10 @@
 - For each coding project, make a folder and inside it run below commands to setup vite in codespace (very easy)  
   from (copilot recommended) run: 
 ```
-npm create vite@latest three3b -- --template react-ts
-cd three3b
-npm i three
+#### npm create vite@latest three3b -- --template react-ts
+npm create vite@latest threejs_5 -- --template vanilla-ts
+then cd to above, npm i, 
+npm i three,
 npm run dev
 ```
 - browser window pops up with app in it. To get app in ide window, "ports" (on bottom) then mouseover it and click "open in browser". It autorefreshes! 
