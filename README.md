@@ -21,6 +21,7 @@ npm run dev
 ### VSCode problem:
 - Every time you open an editor it **closes existing editor** window.  
   **Fix** Menu->File->Preferences->Settings; search for "preview", then **disable "Workbench> editor:enable preview" checkbox** 
+- "sticky" in explorer when folder stays and files scroll below. Disable as above..
   
 ### Comparison codespace vs codesandbox.io:
   - codesandbox.io Better for public demos and accompanying npmjs package; does not require login or account like codespace does; easy to see public project inside your own visual studio; to modify, need to create a LOCAL branch or copy code into new project.  

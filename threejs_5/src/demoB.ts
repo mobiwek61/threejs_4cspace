@@ -5,14 +5,14 @@ let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let textureA: THREE.Texture;
 
-function doAllWork(frameElem:HTMLElement|null): void {
-  if (!frameElem) throw "alksddjfj"
+function doAllWork(): HTMLElement {
   const params = Object.fromEntries(new URLSearchParams(window.location.search));
   const aniso: number = Number.parseInt(params.anisotropic || '1');
-  const newDiv: HTMLDivElement = document.createElement('div');
-  Object.assign(newDiv.style, { fontSize:'1.9em', position: 'absolute', bottom: '0', color:'#00ffff' });
-  newDiv.textContent = `aniso=${aniso}`; frameElem?.appendChild(newDiv);
-
+  const outerFrameDiv: HTMLDivElement = document.createElement('div');
+  const msg: HTMLDivElement = document.createElement('div');
+  Object.assign(msg.style, { fontSize:'1.9em', position: 'absolute', bottom: '0', color:'#00ffff' });
+  msg.textContent = `aniso from url: ${aniso}`; 
+  outerFrameDiv.appendChild(msg);
   new THREE.TextureLoader().load(
     '/star.svg',
     (loadedTexture: THREE.Texture) => {
@@ -23,13 +23,14 @@ function doAllWork(frameElem:HTMLElement|null): void {
       loadedTexture.anisotropy = aniso;
 
       textureA = loadedTexture;
-      doWhenStuffLoaded(frameElem);
+      doWhenStuffLoaded(outerFrameDiv);
     },
     undefined,
     (err: ErrorEvent) => {
       console.error('Texture load error:', err);
     }
   );
+  return outerFrameDiv;
 }
 
 function doWhenStuffLoaded(frameElem:HTMLElement): void {
@@ -75,6 +76,7 @@ function doWhenStuffLoaded(frameElem:HTMLElement): void {
   scene.add(sphere);
 
   animate();
+  //return renderer.domElement
 }
 
 function animate(): void {
