@@ -4,7 +4,6 @@ import { QRpopup } from './QRpopup';
 
 type MenuItemLink = { href: string;   text: string; };
 // type callbackA = () => void;
-type MenuItemFnCall = { cback: () => void; text: string; };
 
 var theQR = QRpopup({})
 function CreateHamburgerMenuLinks(ff: () => void, menus:Array) {
@@ -18,15 +17,17 @@ function CreateHamburgerMenuLinks(ff: () => void, menus:Array) {
     }
   };
 
-  for (let i = 0; i < 3; i++) {
-    const bar = document.createElement('div');
-    bar.className = 'bar';
-    container.appendChild(bar);
+  for (let i = 0; i < 3; i++) {  // this is the hamburger 3-bar thing
+    const bar = document.createElement('div'); bar.className = 'bar'; container.appendChild(bar);  
   }
-  container.appendChild(parseMenuToLink(menus));
+  //container.appendChild(parseMenuToLink(menus));
+  const items = parseMenuToFn(menus);
+  container.appendChild(items);
   container.appendChild(theQR) // the {} removes missing-arg error
   return container;
 }
+
+type MenuItemFnCall = { cback: (bb:any) => void; text: string; params?: Object };
 
 const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
   const div = document.createElement('div'); div.id = 'menuFrame'; div.style.display = 'none'
@@ -35,14 +36,20 @@ const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
   /* stack vertically */menuDiv.style.display='flex'; menuDiv.style.flexDirection='column';
   menuDiv.style.whiteSpace = 'nowrap'; 
   links.forEach(link => {
-    const anch = document.createElement('a'); anch.className='anchorStyle'; 
-    anch.href = link.href;  anch.textContent = link.text; 
-    menuDiv.appendChild(anch);
+    createButtonCbFunc(link.text, link.cback, {}, menuDiv)
+    // menuDiv.appendChild(anch);
   });
   createButton('qr code', () => { console.log('adfasdf')}, menuDiv)
   div.appendChild(menuDiv)
   return div
 };
+
+function createButtonCbFunc(label: string, callBackFn: (params:Object) => void, params: Object, target: HTMLElement) {
+  const button = document.createElement('a');
+  button.textContent = label; button.className='anchorStyle';
+  button.onclick = () => { callBackFn(params); console.log('clicked '+label) };  
+  target.appendChild(button);
+}
 
 const parseMenuToLink = (links:Array<MenuItemLink>) => {
   const div = document.createElement('div'); div.id = 'menuFrame'; div.style.display = 'none'
@@ -63,10 +70,7 @@ const parseMenuToLink = (links:Array<MenuItemLink>) => {
 function createButton(label: string, onClick: () => void, target: HTMLElement = document.body) {
   const button = document.createElement('a');
   button.textContent = label; button.className='anchorStyle';
-  //Object.assign(button.style, { width:'fit-content', backgroundColor: 'transparent' });
-  // button.onclick = onClick;
   button.onclick = () => { theQR.style.display = theQR.style.display === 'block' ? 'none' : 'block' };
-    
   target.appendChild(button);
 }
 
