@@ -17,30 +17,34 @@ const menuItemszzzz:Array<MenuItemLink> = [
 ];
 const menuItems:Array<MenuItemFnCall> = [
   //{ href: "?demoID=demoID-A", text: "texture circles" },
-  { cback: () => doCback(demoB), text: "texture circle aniso-16", params: { anisotropic:16, textureSpec:'circle' }  },
-  { cback: () => doCback(demoB), text: "texture stars aniso-0", params: { anisotropic:1, textureSpec:'star' }}, 
-  { cback: () => doCback(demoB), text: "texture stars aniso-16", params: { anisotropic:16, textureSpec:'circle' } },
-  { cback: () => doCback(demoB), text: "OrbitLights" },
+  { cback: () => doCback(demoB, { anisotropic:16, textureSpec:'circle' } ), text: "texture circle aniso-16", params: { anisotropic:16, textureSpec:'circle' }  },
+  { cback: () => doCback(demoB, { anisotropic:1, textureSpec:'star' } ), text: "texture stars aniso-1", params: { anisotropic:16, textureSpec:'circle' }  },
+  // { cback: () => doCback(demoB), text: "texture stars aniso-0", params: { anisotropic:1, textureSpec:'star' }}, 
+  // { cback: () => doCback(demoB), text: "texture stars aniso-16", params: { anisotropic:16, textureSpec:'circle' } },
+  // { cback: () => doCback(demoB), text: "OrbitLights" },
 ];
 
-function doCback(fn: (params:Object)=>void) {
-    console.log('dCback called')
+function doCback(fn: (params:Object)=>HTMLElement, params:Object) {
+    frameElem?.removeChild(frameElem?.children[0])
+    frameElem?.appendChild(fn(params))
 }
 
 let frameElem: HTMLElement | null = document.querySelector("#mainDiv");
 
-var demoID = new URLSearchParams(window.location.search).get('demoID')
-switch (demoID) {
-    //case 'demoID-A': demoA(); break;
-    case 'demoID-B': 
-        frameElem?.appendChild(demoB());
-        break;  
-    case 'OrbitLights': 
-        frameElem?.appendChild(TwoSpheresWithMovingLight()); 
-        break;  
-    default: frameElem?.appendChild(TwoSpheresWithMovingLight()); 
-        break;  
-}
+frameElem?.appendChild(demoB({ anisotropic:16, textureSpec:'circle' }));
+// example where params come from url after the ?  ie: www.zz.com/bbb?demoID=demoID-B&anisotropic=16&textureSpec=star
+// var demoID = new URLSearchParams(window.location.search).get('demoID')
+// switch (demoID) {
+//     //case 'demoID-A': demoA(); break;
+//     case 'demoID-B': 
+//         frameElem?.appendChild(demoB());
+//         break;  
+//     case 'OrbitLights': 
+//         frameElem?.appendChild(TwoSpheresWithMovingLight()); 
+//         break;  
+//     default: frameElem?.appendChild(TwoSpheresWithMovingLight()); 
+//         break;  
+// }
 
 document.body.appendChild(
-    CreateHamburgerMenuLinks((ff:void)=>{ console.log('hi2')} , menuItems)   )
+    CreateHamburgerMenuLinks(()=>{ /* code here */ } , menuItems)   )

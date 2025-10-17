@@ -5,23 +5,23 @@ let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
 let textureA: THREE.Texture;
 
-function doAllWork(): HTMLElement {
-  const params = Object.fromEntries(new URLSearchParams(window.location.search));
-  const aniso: number = Number.parseInt(params.anisotropic || '1');
+function doAllWork(args:Object): HTMLElement {
+  // const params = Object.fromEntries(new URLSearchParams(window.location.search));
+  //const aniso: number = args.anisotropic // Number.parseInt(params.anisotropic || '1');
   const outerFrameDiv: HTMLDivElement = document.createElement('div');
   const msg: HTMLDivElement = document.createElement('div');
   Object.assign(msg.style, { fontSize:'1.9em', position: 'absolute', bottom: '0', color:'#00ffff' });
-  msg.textContent = `aniso from url: ${aniso}`; 
+  msg.textContent = `aniso from url: ${args.anisotropic}`; 
   outerFrameDiv.appendChild(msg);
-  const tspec = params.textureSpec ? params.textureSpec : 'star';
+  //const tspec = params.textureSpec ? params.textureSpec : 'star';
   new THREE.TextureLoader().load(
-    '\/' + tspec + '.svg', // '/star.svg',
+    '\/' + args.textureSpec + '.svg', // '/star.svg',
     (loadedTexture: THREE.Texture) => {
       console.log('got it');
       loadedTexture.wrapS = THREE.RepeatWrapping;
       loadedTexture.wrapT = THREE.RepeatWrapping;
       loadedTexture.repeat.set(11, 11);
-      loadedTexture.anisotropy = aniso;
+      loadedTexture.anisotropy = args.anisotropic;
 
       textureA = loadedTexture;
       doWhenStuffLoaded(outerFrameDiv);

@@ -6,7 +6,7 @@ type MenuItemLink = { href: string;   text: string; };
 // type callbackA = () => void;
 
 var theQR = QRpopup({})
-function CreateHamburgerMenuLinks(ff: () => void, menus:Array) {
+function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
   console.log('asdf')
   const container = document.createElement('div');
   container.className = 'hamburger';
