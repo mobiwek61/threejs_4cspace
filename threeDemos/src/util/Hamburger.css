@@ -18,4 +18,6 @@
   height: 4px;
   background-color: #ffffff;
   border-radius: 2px;
+  /* visual drop shadow for the hamburger container  offset-x offset-y blur-radius spread-radius color */
+  box-shadow: 6px 6px 6px rgba(0,0,0,0.88);
 }

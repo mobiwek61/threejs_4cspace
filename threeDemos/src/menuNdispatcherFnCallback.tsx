@@ -6,30 +6,18 @@ import { TwoSpheresWithMovingLight } from './demos/OrbitLights/DemoA.ts'
 import type { MenuItemLink, MenuItemFnCall } from './util/HamburgerMenu.ts';
 import { CreateHamburgerMenuLinks } from './util/HamburgerMenu.ts';
 
-
-
-const menuItemszzzz:Array<MenuItemLink> = [
-  //{ href: "?demoID=demoID-A", text: "texture circles" },
-  { href: "?demoID=demoID-B&anisotropic=16&textureSpec=circle", text: "texture circle aniso-16" },
-  { href: "?demoID=demoID-B&anisotropic=0", text: "texture stars aniso-0" },
-  { href: "?demoID=demoID-B&anisotropic=16", text: "texture stars aniso-16" },
-  { href: "?demoID=OrbitLights", text: "OrbitLights" },
-];
 const menuItems:Array<MenuItemFnCall> = [
-  //{ href: "?demoID=demoID-A", text: "texture circles" },
-  { cback: () => doCback(demoB, { anisotropic:16, textureSpec:'circle' } ), text: "texture circle aniso-16", params: { anisotropic:16, textureSpec:'circle' }  },
-  { cback: () => doCback(demoB, { anisotropic:1, textureSpec:'star' } ), text: "texture stars aniso-1", params: { anisotropic:16, textureSpec:'circle' }  },
-  // { cback: () => doCback(demoB), text: "texture stars aniso-0", params: { anisotropic:1, textureSpec:'star' }}, 
-  // { cback: () => doCback(demoB), text: "texture stars aniso-16", params: { anisotropic:16, textureSpec:'circle' } },
-  // { cback: () => doCback(demoB), text: "OrbitLights" },
+  { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'circle' } ))  }, text: "texture circle aniso-16"  },
+  { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'star' } ))  }, text: "texture stars aniso-1"  },
+  { cback: () => { replaceView(demoB({ anisotropic:16, textureSpec:'star' } ))  }, text: "texture stars aniso-16"  },
+  { cback: () => { replaceView(TwoSpheresWithMovingLight())  }, text: "orbit lights 2"  }
 ];
-
-function doCback(fn: (params:Object)=>HTMLElement, params:Object) {
-    frameElem?.removeChild(frameElem?.children[0])
-    frameElem?.appendChild(fn(params))
-}
 
 let frameElem: HTMLElement | null = document.querySelector("#mainDiv");
+function replaceView( newView:HTMLElement) {
+    if (frameElem && frameElem?.childNodes?.length > 0) frameElem?.removeChild(frameElem?.children[0])
+    frameElem?.appendChild(newView)
+}
 
 frameElem?.appendChild(demoB({ anisotropic:16, textureSpec:'circle' }));
 // example where params come from url after the ?  ie: www.zz.com/bbb?demoID=demoID-B&anisotropic=16&textureSpec=star
