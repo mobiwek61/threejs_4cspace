@@ -5,9 +5,10 @@ import { QRpopup } from './QRpopup';
 type MenuItemLink = { href: string;   text: string; };
 // type callbackA = () => void;
 
-var theQR = QRpopup({})
+var theQR:HTMLElement;
 function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
-  console.log('asdf')
+  theQR = QRpopup({}, window.location.href + '?menuKey=' + sessionStorage.getItem('menuKey'))
+  console.log('menuKey ' + sessionStorage.getItem('menuKey'))
   const container = document.createElement('div');
   container.className = 'hamburger';
   container.onclick = () => {  ff(); 
@@ -27,7 +28,7 @@ function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
   return container;
 }
 
-type MenuItemFnCall = { cback: (bb:any) => void; text: string; params?: Object };
+type MenuItemFnCall = { key?:number; cback: (bb:any) => void; text: string; params?: Object };
 
 const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
   const div = document.createElement('div'); div.id = 'menuFrame'; div.style.display = 'none'
@@ -50,22 +51,6 @@ function createButtonCbFunc(label: string, callBackFn: (params:Object) => void, 
   button.onclick = () => { callBackFn(params); console.log('clicked '+label) };  
   target.appendChild(button);
 }
-
-const parseMenuToLink = (links:Array<MenuItemLink>) => {
-  const div = document.createElement('div'); div.id = 'menuFrame'; div.style.display = 'none'
-  const menuDiv = document.createElement('div'); div.id = 'menuA'; 
-  menuDiv.style.color = 'white'; menuDiv.textContent = 'choose item: '; 
-  /* stack vertically */menuDiv.style.display='flex'; menuDiv.style.flexDirection='column';
-  menuDiv.style.whiteSpace = 'nowrap'; 
-  links.forEach(link => {
-    const anch = document.createElement('a'); anch.className='anchorStyle'; 
-    anch.href = link.href;  anch.textContent = link.text; 
-    menuDiv.appendChild(anch);
-  });
-  createButton('qr code', () => { console.log('adfasdf')}, menuDiv)
-  div.appendChild(menuDiv)
-  return div
-};
 
 function createButton(label: string, onClick: () => void, target: HTMLElement = document.body) {
   const button = document.createElement('a');

@@ -7,14 +7,16 @@ import type { MenuItemLink, MenuItemFnCall } from './util/HamburgerMenu.ts';
 import { CreateHamburgerMenuLinks } from './util/HamburgerMenu.ts';
 
 const menuItems:Array<MenuItemFnCall> = [
-  { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'circle' } ))  }, text: "texture circle aniso-16"  },
-  { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'star' } ))  }, text: "texture stars aniso-1"  },
-  { cback: () => { replaceView(demoB({ anisotropic:16, textureSpec:'star' } ))  }, text: "texture stars aniso-16"  },
-  { cback: () => { replaceView(TwoSpheresWithMovingLight())  }, text: "orbit lights 2"  }
+  { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'circle' } ), 1)  }, text: "texture circle aniso-16"  },
+  { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'star' } ), 2)  }, text: "texture stars aniso-1"  },
+  { cback: () => { replaceView(demoB({ anisotropic:16, textureSpec:'star' } ), 3)  }, text: "texture stars aniso-16"  },
+  { cback: () => { replaceView(TwoSpheresWithMovingLight(), 4)  }, text: "orbit lights 2"  }
 ];
+// menuItems.map((item, idx) => ({ key: idx + 1, ...item })); // assign keys to each
 
 let frameElem: HTMLElement | null = document.querySelector("#mainDiv");
-function replaceView( newView:HTMLElement) {
+function replaceView( newView:HTMLElement, key:number) {
+    sessionStorage.setItem('menuKey', key.toString());
     if (frameElem && frameElem?.childNodes?.length > 0) frameElem?.removeChild(frameElem?.children[0])
     frameElem?.appendChild(newView)
 }
