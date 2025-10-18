@@ -20,9 +20,14 @@ function replaceView( newView:HTMLElement, key:number) {
     if (frameElem && frameElem?.childNodes?.length > 0) frameElem?.removeChild(frameElem?.children[0])
     frameElem?.appendChild(newView)
 }
-
+// setup only for first time...
 frameElem?.appendChild(demoB({ anisotropic:16, textureSpec:'circle' }));
-// example where params come from url after the ?  ie: www.zz.com/bbb?demoID=demoID-B&anisotropic=16&textureSpec=star
+
+
+document.body.appendChild(
+    CreateHamburgerMenuLinks(()=>{ /* code here */ } , menuItems)   )
+
+    // example where params come from url after the ?  ie: www.zz.com/bbb?demoID=demoID-B&anisotropic=16&textureSpec=star
 // var demoID = new URLSearchParams(window.location.search).get('demoID')
 // switch (demoID) {
 //     //case 'demoID-A': demoA(); break;
@@ -35,6 +40,3 @@ frameElem?.appendChild(demoB({ anisotropic:16, textureSpec:'circle' }));
 //     default: frameElem?.appendChild(TwoSpheresWithMovingLight()); 
 //         break;  
 // }
-
-document.body.appendChild(
-    CreateHamburgerMenuLinks(()=>{ /* code here */ } , menuItems)   )

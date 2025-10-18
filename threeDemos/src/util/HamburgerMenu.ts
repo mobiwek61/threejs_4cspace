@@ -7,10 +7,9 @@ type MenuItemLink = { href: string;   text: string; };
 
 var theQR:HTMLElement;
 function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
-  theQR = QRpopup({}, window.location.href + '?menuKey=' + sessionStorage.getItem('menuKey'))
   const container = document.createElement('div');
   container.className = 'hamburger';
-  container.onclick = () => {  ff(); 
+  container.onclick = () => {  ff();  // show the hamburger menu
     const popup = document.getElementById('menuA');
     if (popup) {
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
@@ -20,15 +19,14 @@ function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
   for (let i = 0; i < 3; i++) {  // this is the hamburger 3-bar thing
     const bar = document.createElement('div'); bar.className = 'bar'; container.appendChild(bar);  
   }
-  //container.appendChild(parseMenuToLink(menus));
   const items = parseMenuToFn(menus);
   container.appendChild(items);
-  container.appendChild(theQR) // the {} removes missing-arg error
   return container;
 }
 
 type MenuItemFnCall = { key?:number; cback: (bb:any) => void; text: string; params?: Object };
 
+/** parses out list of menu item specs into actual menu items and wires up callbacks as specified in the spec */
 const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
   const div = document.createElement('div'); div.id = 'menuFrame'; div.style.display = 'none'
   const menuDiv = document.createElement('div'); div.id = 'menuA'; 
@@ -37,12 +35,25 @@ const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
   menuDiv.style.whiteSpace = 'nowrap'; 
   links.forEach(link => {
     createButtonCbFunc(link.text, link.cback, {}, menuDiv)
-    // menuDiv.appendChild(anch);
   });
-  createButton('qr code', () => { theQR.style.display = theQR.style.display === 'block' ? 'none' : 'block'; console.log('menuKey ' + sessionStorage.getItem('menuKey')) }, menuDiv)
+  menuDiv.appendChild(  // append button which instantiates new qr canvas and adds it
+    createButton('qr code', () => { 
+      // create popup with qr of specified href and URLSearchParams
+      theQR = QRpopup({ isVisible:true }, window.location.href + '?menuKey=' + sessionStorage.getItem('menuKey'))
+      menuDiv.appendChild(theQR);
+    })
+  )
   div.appendChild(menuDiv)
   return div
 };
+
+function createButton(label: string, onClick: () => void) { //, target: HTMLElement = document.body) {
+  const button = document.createElement('a');
+  button.textContent = label; button.className='anchorStyle';
+  button.onclick = onClick
+  return button;
+  // target.appendChild(button);
+}
 
 function createButtonCbFunc(label: string, callBackFn: (params:Object) => void, params: Object, target: HTMLElement) {
   const button = document.createElement('a');
@@ -51,12 +62,7 @@ function createButtonCbFunc(label: string, callBackFn: (params:Object) => void, 
   target.appendChild(button);
 }
 
-function createButton(label: string, onClick: () => void, target: HTMLElement = document.body) {
-  const button = document.createElement('a');
-  button.textContent = label; button.className='anchorStyle';
-  button.onclick = onClick
-  target.appendChild(button);
-}
+
 
 export { CreateHamburgerMenuLinks, type MenuItemLink, type MenuItemFnCall };
 
