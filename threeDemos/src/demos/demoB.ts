@@ -74,7 +74,7 @@ function doWhenStuffLoaded(frameElem:HTMLElement): void {
 
   const sphereGeometry = new THREE.SphereGeometry(5, 64, 64);
   const sphere = new THREE.Mesh(sphereGeometry, material);
-  sphere.position.x = 6;
+  sphere.position.x = -4;
   scene.add(sphere);
 
   animate();
