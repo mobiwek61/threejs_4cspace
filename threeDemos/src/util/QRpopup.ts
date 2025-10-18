@@ -4,6 +4,7 @@ import './Hamburger.css';
 import  QRCode  from 'qrcode'
 
 interface PopupProps {
+    id: string;
     isVisible?: boolean;
     txtdesc?: string;
     callBackCloseMe?: () => void;
@@ -14,7 +15,7 @@ var rightArrow = 0x25B6;
 // PopupProps is a typescript interface obtained from the bundle
 //    it specifies the parameters given to the popup by the mobiwek framework.
 function QRpopup (puprops:PopupProps, message:string):HTMLCanvasElement { // , frameElem:HTMLElement|null) {
-    const qrcanvas = document.createElement("canvas")
+    const qrcanvas = document.createElement("canvas"); qrcanvas.id = puprops.id;
     console.log(message)
     QRCode.toCanvas(qrcanvas, 
       //window.location.href, 

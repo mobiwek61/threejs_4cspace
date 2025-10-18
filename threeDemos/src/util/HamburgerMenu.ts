@@ -9,9 +9,13 @@ var theQR:HTMLElement;
 function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
   const container = document.createElement('div');
   container.className = 'hamburger';
-  container.onclick = () => {  ff();  // show the hamburger menu
+  container.onclick = (event) => {  ff();  // show the hamburger menu
     const popup = document.getElementById('menuA');
     if (popup) {
+      if (event.target.text != 'qr code') 
+          document.querySelector('[id^="theQR"]')?.remove() ; // remove any existing qr code canvas
+      // var theQR = document.querySelector('[id^="theQR"]')
+      // if (theQR) theQR.remove() ; // remove any existing qr code canvas
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
   };
@@ -36,13 +40,13 @@ const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
   links.forEach(link => {
     createButtonCbFunc(link.text, link.cback, {}, menuDiv)
   });
-  menuDiv.appendChild(  // append button which instantiates new qr canvas and adds it
-    createButton('qr code', () => { 
+  var qrBtnShow = createButton('qr code', () => { 
       // create popup with qr of specified href and URLSearchParams
-      theQR = QRpopup({ isVisible:true }, window.location.href + '?menuKey=' + sessionStorage.getItem('menuKey'))
+      theQR = QRpopup({ id:'theQR', isVisible:true }, window.location.href + '?menuKey=' + sessionStorage.getItem('menuKey'))
       menuDiv.appendChild(theQR);
-    })
-  )
+      document.getElementById('menuA')?.style.setProperty('display', '');
+  })
+  menuDiv.appendChild(qrBtnShow)
   div.appendChild(menuDiv)
   return div
 };
