@@ -8,7 +8,6 @@ type MenuItemLink = { href: string;   text: string; };
 var theQR:HTMLElement;
 function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
   theQR = QRpopup({}, window.location.href + '?menuKey=' + sessionStorage.getItem('menuKey'))
-  console.log('menuKey ' + sessionStorage.getItem('menuKey'))
   const container = document.createElement('div');
   container.className = 'hamburger';
   container.onclick = () => {  ff(); 
@@ -40,7 +39,7 @@ const parseMenuToFn = (links:Array<MenuItemFnCall>) => {
     createButtonCbFunc(link.text, link.cback, {}, menuDiv)
     // menuDiv.appendChild(anch);
   });
-  createButton('qr code', () => { console.log('adfasdf')}, menuDiv)
+  createButton('qr code', () => { theQR.style.display = theQR.style.display === 'block' ? 'none' : 'block'; console.log('menuKey ' + sessionStorage.getItem('menuKey')) }, menuDiv)
   div.appendChild(menuDiv)
   return div
 };
@@ -55,7 +54,7 @@ function createButtonCbFunc(label: string, callBackFn: (params:Object) => void, 
 function createButton(label: string, onClick: () => void, target: HTMLElement = document.body) {
   const button = document.createElement('a');
   button.textContent = label; button.className='anchorStyle';
-  button.onclick = () => { theQR.style.display = theQR.style.display === 'block' ? 'none' : 'block' };
+  button.onclick = onClick
   target.appendChild(button);
 }
 
