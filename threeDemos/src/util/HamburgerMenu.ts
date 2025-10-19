@@ -12,10 +12,8 @@ function CreateHamburgerMenuLinks(ff: () => void, menus:Array<MenuItemFnCall>) {
   container.onclick = (event) => {  ff();  // show the hamburger menu
     const popup = document.getElementById('menuA');
     if (popup) {
-      if (event.target.text != 'qr code') 
-          document.querySelector('[id^="theQR"]')?.remove() ; // remove any existing qr code canvas
-      // var theQR = document.querySelector('[id^="theQR"]')
-      // if (theQR) theQR.remove() ; // remove any existing qr code canvas
+      var foo = event.target as HTMLAnchorElement;
+      if (foo.outerText != 'qr code' ) theQR?.remove(); // clear qr display
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
   };
