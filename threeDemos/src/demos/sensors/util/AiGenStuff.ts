@@ -1,11 +1,15 @@
 
+// function asciiBar2(min:number, max:number, val1:number, val2:number) {
+//         return ( val1 + '<br/>' + // val1 + '  kal:' + val2  // + '  ct:' + ct++ + '<br/>' 
+//             asciiBar(min, max, val1) + '<br/>' + asciiBar(min, max, val2))
+// }
 function asciiBar2(min:number, max:number, val1:number, val2:number) {
-        return ( val1 + '<br/>' + // val1 + '  kal:' + val2  // + '  ct:' + ct++ + '<br/>' 
-            asciiBar(min, max, val1) + '<br/>' + asciiBar(min, max, val2))
+        return ( '<div id="asciibar">' + // val1 + '  kal:' + val2  // + '  ct:' + ct++ + '<br/>' 
+            asciiBar(min, max, val1) + asciiBar(min, max, val2) + '</div')
 }
 
 function asciiBar(min: number, max: number, current: number): string {
-  const totalWidth = 30;
+  const totalWidth = 60;
   const clamped = Math.max(min, Math.min(current, max));
   const ratio = (clamped - min) / (max - min);
   const pos = Math.round(ratio * (totalWidth - 1)); // position of 'X'
@@ -15,7 +19,7 @@ function asciiBar(min: number, max: number, current: number): string {
     bar += i === pos ? 'X' : '-';
   }
 
-  return `[${bar}] ${clamped.toFixed(2)}`;
+  return `[${bar}] <div class='fontX'> ${current.toFixed(2)} </div>`;
 }
 
 

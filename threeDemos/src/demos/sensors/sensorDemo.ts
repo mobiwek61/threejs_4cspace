@@ -7,6 +7,12 @@ import { asciiBar, asciiBar2 } from './util/AiGenStuff.ts'
 var mainDiv: HTMLDivElement
 function sensorDemo(args:Object): HTMLElement {
   mainDiv = document.createElement('div');
+  Object.assign(mainDiv.style, {
+    fontSize: '4.8vw', position: 'absolute', top: '100px', fontWeight: 'bold',
+  });
+  const style = document.createElement('style');
+  style.textContent = '.fontX { font-size: 30px; }';
+  document.head.appendChild(style);
   updateDisplay(mainDiv, 'starting sensor demo...') 
   startupDemo()
   return mainDiv;
