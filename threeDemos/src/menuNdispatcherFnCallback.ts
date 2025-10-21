@@ -5,10 +5,10 @@ import { TwoSpheresWithMovingLight } from './demos/OrbitLights/DemoA.ts'
 // import { PopupA, QrInFrame } from './util/PopupA.ts';
 import type { MenuItemLink, MenuItemFnCall } from './util/HamburgerMenu.ts';
 import { CreateHamburgerMenuLinks } from './util/HamburgerMenu.ts';
-import { sensorDemo } from './demos/sensors/sensorDemo.ts';
+import { sensorDemo } from './demos/sensors_kalman/sensorDemo.ts';
 
 const menuItems:Array<MenuItemFnCall> = [
-  { cback: () => { replaceView(sensorDemo({}), 1)  }, text: "AbsoluteOrientationSensor"  },
+  { cback: () => { replaceView(sensorDemo({}), 1)  }, text: "Sensor + Kalman"  },
   { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'circle' } ), 2)  }, text: "texture circle aniso-16"  },
   { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'star' } ), 3)  }, text: "texture stars aniso-1"  },
   { cback: () => { replaceView(demoB({ anisotropic:16, textureSpec:'star' } ), 4)  }, text: "texture stars aniso-16"  },
