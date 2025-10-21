@@ -6,12 +6,11 @@ import { asciiBar, asciiBar2 } from './util/AiGenStuff.ts'
 
 var mainDiv: HTMLDivElement
 function sensorDemo(args:Object): HTMLElement {
-  mainDiv = document.createElement('div');
-  Object.assign(mainDiv.style, {
-    fontSize: '4.8vw', position: 'absolute', top: '100px', fontWeight: 'bold',
-  });
+  mainDiv = document.createElement('div'); mainDiv.id = 'mainDiv';
+  // put style into doc. with ai helping..
   const style = document.createElement('style');
-  style.textContent = '.fontX { font-size: 30px; }';
+  style.textContent = '.fontX { font-size: 30px; } '+
+      '#mainDiv { width: 100vw; font-size: 4.8vw;position: absolute;top: 20px;font-weight: bold;}';
   document.head.appendChild(style);
   updateDisplay(mainDiv, 'starting sensor demo...') 
   startupDemo()
