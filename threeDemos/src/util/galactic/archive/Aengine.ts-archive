@@ -1,0 +1,118 @@
+//import React, { ReactDOM, useEffect, useState, useRef } from 'react';
+// import devProjCSS from './devProject.module.css'
+// npm install astronomy-engine   on june 2025
+//import * as THREE from 'three';
+// to get intellisense to work: npm install --save-dev @types/three
+import { Observer, Body, Horizon, Equator, AstroTime } from 'astronomy-engine';
+
+/*
+ https://github.com/cosinekitty/astronomy
+ https://www.npmjs.com/package/astronomy-engine
+*/
+class AstXform {
+   /**
+    * input to gemini use "astronomy-engine - npm" to show current azimuth and 
+    * altitude based on lat lon and time. eliminate blank lines and comments
+    */
+    static testA() {
+        // const Astronomy = require('astronomy-engine'); old way
+        const latitude = 40.7128;
+        const longitude = -74.0060;
+        const elevation = 0;
+        const observer = new Observer(latitude, longitude, elevation);
+        const date = new Date(); //'2025-06-26T09:18:29-04:00');
+        const body = Body.Sun // Body.Moon;
+        const horizontalCoords = Horizon(date, observer, 
+            Equator(body, date, observer, true, true).ra, 
+            Equator(body, date, observer, true, true).dec, 'normal');
+        const azimuth = horizontalCoords.azimuth;
+        const altitude = horizontalCoords.altitude;
+        console.log('Sun Current Azimuth of the ' + body + ':' + azimuth.toFixed(4) + ' degrees');
+        console.log(`Current Altitude of the ${body}: ${altitude.toFixed(4)} degrees`);
+    }
+
+    getRa_Decl_of_sun() {
+        // Calculate the Sun's equatorial coordinates for the current time
+        const equatorial = Equator(Body.Sun, new Date(), new Observer(0, 0, 0), true, false);
+        // Extract and print right ascension and declination
+        console.log(`Right Ascension: ${equatorial.ra.toFixed(6)} hours`);
+        console.log(`Declination: ${equatorial.dec.toFixed(6)} degrees`);
+    }
+
+    /*
+    J2000 refers to a standard astronomical epoch—a fixed point in time used as a reference for celestial coordinates
+    "J2000" are frozen snapshots of where objects appeared in the sky at the start of the year 2000.
+    In constrast "of date" is
+    */
+    andromeda() {
+        
+    }
+
+    /**
+     * to Gemini: "use "astronomy-engine - npm" to show current azimuth and
+
+    altitude of object given right ascension and declination"
+     */
+    static RaDeclToAzimAlt() {
+        
+        // --- 1. Define the observer's location and time ---
+        // For New York, New York, USA:
+        const latitude = 40.7128; // North latitude
+        const longitude = -74.0060; // West longitude (negative)
+        const elevation = 0; // meters above sea level (adjust if known)
+
+        //const observer = new Observer({latitude: latitude,longitude: longitude,elevation: elevation});
+        const observer = new Observer(latitude,longitude, elevation);
+
+        // Current time (June 26, 2025, 2:42:01 PM EDT)
+        // It's crucial to use UTC for astronomical calculations.
+        // EDT is UTC-4, so 2:42:01 PM EDT is 6:42:01 PM UTC.
+        const now = new Date() //'2025-06-26T18:42:01Z'); // ISO 8601 format for UTC
+        const time = new AstroTime(now);
+
+        // --- 2. Define the object's Right Ascension and Declination ---
+        // Replace these with the actual RA and Dec of your object.
+        // RA is typically in hours, minutes, seconds. Dec is in degrees, arcminutes, arcseconds.
+        // astronomy-engine expects RA in degrees and Dec in degrees.
+        // 1 hour RA = 15 degrees
+        // 1 minute RA = 15/60 = 0.25 degrees
+        // 1 second RA = 15/3600 degrees
+        // For Dec, 1 arcminute = 1/60 degrees, 1 arcsecond = 1/3600 degrees.
+
+        // Example: Let's use some arbitrary RA and Dec for demonstration (e.g., a bright star)
+        // Convert RA from H:M:S to degrees: (H + M/60 + S/3600) * 15
+        const raHours = 5;
+        const raMinutes = 55;
+        const raSeconds = 10.3; // Example for Betelgeuse (approximate J2000)
+        const rightAscensionDegrees = (raHours + raMinutes / 60 + raSeconds / 3600) * 15;
+
+        // Convert Dec from D:M:S to degrees: D + M/60 + S/3600 (handle negative sign if applicable)
+        const decDegrees = 7;
+        const decMinutes = 24;
+        const decSeconds = 25.4; // Example for Betelgeuse (approximate J2000)
+        const declinationDegrees = decDegrees + decMinutes / 60 + decSeconds / 3600;
+
+
+        const radec = {
+            rightAscension: rightAscensionDegrees,
+            declination: declinationDegrees
+        };
+
+        // --- 3. Calculate the Horizon Coordinates ---
+        const horizonCoordinates = Horizon(time, observer, rightAscensionDegrees, declinationDegrees);
+
+        // --- 4. Display the results ---
+        console.log(`zzzCurrent Azimuth: ${horizonCoordinates.azimuth.toFixed(2)} degrees`);
+        console.log(`Current Altitude: ${horizonCoordinates.altitude.toFixed(2)} degrees`);
+        console.log('done')
+        // You can also access other properties if needed
+        // console.log(`Hour Angle: ${horizonCoordinates.hourAngle.toFixed(2)} degrees`);
+        // console.log(`Parallactic Angle: ${horizonCoordinates.parallacticAngle.toFixed(2)} degrees`);
+    }
+}
+export { AstXform }
+
+/*
+$('#x').draggable();
+$('#c').droppable({
+*/

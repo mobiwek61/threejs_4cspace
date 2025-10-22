@@ -1,0 +1,14 @@
+gemini results:
+
+>show example using astronomy-engine npm package to use Horizon
+
+> what means horizon class
+2. How Horizon Works in astronomy-engine
+The Horizon class  hold a single value: the altitude (or depression) of the reference horizon, typically expressed in radians.
+Constructor: new Astronomy.Horizon(altitude_in_radians);
+defaults to 0 radians, representing the geometric horizon.
+astronomy-engine package provides convenient pre-defined Horizon objects for common scenarios, which already incorporate atmospheric refraction and account for the Sun's limb (edge) for "official" rise/set times:
+Astronomy.Horizon.SUNRISE: Designed for official sunrise (when the Sun's upper limb touches the horizon, accounting for refraction).
+Astronomy.Horizon.SUNSET: Designed for official sunset (when the Sun's upper limb touches the horizon, accounting for refraction).
+Astronomy.Horizon.CIVIL_TWILIGHT: For civil twilight (Sun's center at -6 degrees below horizon, usually with refraction accounted for).
+Astronomy.Horizon.NAUTICAL_TWILIGHT: For nautical twilight (Sun's center at -12 degrees below horizon).
