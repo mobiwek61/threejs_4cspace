@@ -1,0 +1,41 @@
+/** orbit light according to quaternion. jsdoc made by copilot!
+     * @param {string} color - The color of the light (e.g., hex or CSS color name).
+     * @param {number} intensity - The brightness or intensity of the light.
+     * @param {number} orbitAlt - The altitude of the orbit path.
+     * @param {number} centerX - X-coordinate of the orbit center.
+     * @param {number} centerY - Y-coordinate of the orbit center.
+     * @param {number} centerZ - Z-coordinate of the orbit center.
+     * @param {THREE.Quaternion} lightSourceQuat - data from Web Api AbsoluteOrientationSensor which has been transformed to portrait or landscape space.
+     **/
+    function orbitRectLight(color, intensity, orbitAlt, centerX, centerY, centerZ, lightSourceQuat:THREE.Quaternion) {
+        if (Math.floor(orlCt.current += 1 / 5) % 2 === 0) color=0x00ffff // flashes!
+        const movingLightA = new THREE.RectAreaLight(color, intensity,  99, 99 );
+        /* start with light on y axis overhead. Then use quaternion to rotate the vector.
+           Quaternions can only do orientation, not absolute location! */
+        const vecLightPosition = new THREE.Vector3(0, 0, orbitAlt); // initial position
+        //quatTHREE.slerp(new THREE.Quaternion(1, 0, 0), 1)
+        vecLightPosition.applyQuaternion(lightSourceQuat.invert()); // rotate from 0, 0 based on sensor
+        // bump the newly aimed vector to its actual position
+        vecLightPosition.x += centerX; vecLightPosition.y += centerY; vecLightPosition.z += centerZ
+        movingLightA.position.copy(vecLightPosition); // apply vecgtor to the light
+        movingLightA.lookAt(centerX, centerY, centerZ) // "aim" the light direction
+        return movingLightA
+    }
+
+     /** lights fixed to earth frame of reference. Their position in the scene
+         *  changes when the scene (ie the phone) tilts.
+         *  0 elevation: in degrees  
+         *  - orbitAlt: lenght of orbit as phone tilts
+         *  - centerX/Y/Z center of orbit  */
+        function orbitPointLight(elevation, color, intensity, orbitAlt, centerX, centerY, centerZ) {
+            //const movingLightA = new THREE.DirectionalLight(0xFCE570, 22);
+            // WARNING: default decay of 2 must be overridden or not visible!
+            const movingLightA = new THREE.PointLight(color, intensity, 0, 0);
+            // using euler
+            movingLightA.position.set(
+                // ofstX, orbitAlt, ofstZ)
+                centerX - orbitAlt * Math.sin(toRads(elevation)), 
+                centerY + orbitAlt * Math.cos(toRads(elevation)), centerZ)
+            return movingLightA
+        }
+    

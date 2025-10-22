@@ -1,0 +1,34 @@
+import React, { ReactDOM, useEffect, useState } from 'react';
+/**
+ * Transforms text perspective using only CSS, not opengl/Three.js
+ */
+var cssXform = "rotateZ(90deg) rotateY(33deg)"
+cssXform += " translateZ(-77px)"
+function Do_css_perspective_transform(propsTxt) {
+    /* !!! useEffect() !!! is React's lifecycle event, like onLoad(), onRefresh() etc. */
+    useEffect(() => { 
+    }); //, []); 
+    return <div id='threeDemoA' 
+            style={{ 
+                position:'absolute',
+                width:'95vw', height:'85vh', background:'#333333', 
+                perspective:'222px',
+                border:'5px solid red'}}>
+                {/* copy from browser debugger and ask Copilot "translate to jsx react" */}
+                <div id='xformThing' style={{ 
+                        transform: cssXform,
+                        left: "2%",
+                        fontSize: "49vw",
+                        top: "25%",
+                        position: 'relative'
+                        //     transform: translate(-55%, -50%) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+                    }}>
+                    {propsTxt.txt}
+                </div>    
+           </div>
+}
+
+
+
+export { Do_css_perspective_transform }
+
