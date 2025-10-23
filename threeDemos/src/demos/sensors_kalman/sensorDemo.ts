@@ -1,8 +1,8 @@
 
 /** basic orientation sensors demo. does not include three.js */
-import { sensors } from './util/sensorHelper.ts';
-import { KalmanFilter, QuatAreFun } from './util/QuatAreFun.ts'
-import { asciiBar, asciiBar2 } from './util/AiGenStuff.ts'
+import { sensors } from '../util/sensorHelper.ts';
+import { KalmanFilter, QuatAreFun } from '../util/QuatAreFun.ts'
+import { asciiBar, asciiBar2 } from '../util/AiGenStuff.ts'
 
 var mainDiv: HTMLDivElement
 function sensorDemo(args:Object): HTMLElement {

@@ -6,13 +6,15 @@ import { TwoSpheresWithMovingLight } from './demos/OrbitLights/DemoA.ts'
 import type { MenuItemLink, MenuItemFnCall } from './util/HamburgerMenu.ts';
 import { CreateHamburgerMenuLinks } from './util/HamburgerMenu.ts';
 import { sensorDemo } from './demos/sensors_kalman/sensorDemo.ts';
+//import { DoOrientTest } from './demos/sensorThreejs/Sensors.ts';
 
 const menuItems:Array<MenuItemFnCall> = [
   { cback: () => { replaceView(sensorDemo({}), 1)  }, text: "Sensor + Kalman"  },
   { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'circle' } ), 2)  }, text: "texture circle aniso-16"  },
   { cback: () => { replaceView(demoB({ anisotropic:1, textureSpec:'star' } ), 3)  }, text: "texture stars aniso-1"  },
   { cback: () => { replaceView(demoB({ anisotropic:16, textureSpec:'star' } ), 4)  }, text: "texture stars aniso-16"  },
-  { cback: () => { replaceView(TwoSpheresWithMovingLight(), 5)  }, text: "orbit lights 2"  }
+  { cback: () => { replaceView(TwoSpheresWithMovingLight(), 5)  }, text: "orbit lights 2"  },
+  // { cback: () => { replaceView(DoOrientTest({}), 1)  }, text: "Sensor+3D"  }
 ];
 // menuItems.map((item, idx) => ({ key: idx + 1, ...item })); // assign keys to each
 

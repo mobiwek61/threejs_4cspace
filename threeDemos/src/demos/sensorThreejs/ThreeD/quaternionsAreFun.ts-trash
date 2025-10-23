@@ -17,7 +17,7 @@ class QuatAreFun {
                roll:  QuatAreFun.rnd(eul.y * (180/Math.PI)) };
    }
 
-    static rnd(floatVal) { 
+    static rnd(floatVal:number):number { 
       return Math.round(floatVal)
       // return Math.round(floatVal * 100) / 100; 
     }

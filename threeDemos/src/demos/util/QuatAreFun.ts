@@ -17,12 +17,12 @@ class QuatAreFun {
                roll:  QuatAreFun.rnd(eul.y * (180/Math.PI)) };
    }
 
-    static rnd(floatVal) { 
+    static rnd(floatVal:number):number { 
       return Math.round(floatVal)
       // return Math.round(floatVal * 100) / 100; 
     }
 
-    static showQuat(arr):string {
+    static showQuat(arr:Array<number>):string {
       // const [x, y, z, w] = array;
       // return { x:arr[0].toFixed(2), y:arr[1].toFixed(2), z:arr[2].toFixed(2), w:arr[3].toFixed(2) };
       return ('x:' + arr[0].toFixed(2) + 'y:' + arr[1].toFixed(2) + '\n' +
@@ -86,6 +86,7 @@ class QuatAreFun {
      * Creates a new KalmanFilter instance with slow damping settings.
      * @returns {KalmanFilter} A new instance of KalmanFilter with predefined parameters.
      */
+    q:number; r:number; x:number; p:number; k:number;
     static slowDamped() { return new KalmanFilter(.004, 11, 0, 1, 0.05) }
     static okDamped() { return new KalmanFilter(1, 33, 0, 1, 0.05); }
 
@@ -103,7 +104,7 @@ class QuatAreFun {
         p Initial estimation error covariance  
         k Kalman gain  
     */
-    constructor(q, r, x, p, k) {
+    constructor(q:number, r:number, x:number, p:number, k:number) {
         this.q = q; // Process noise covariance
         this.r = r; // Measurement noise covariance
         this.x = x; // Initial state

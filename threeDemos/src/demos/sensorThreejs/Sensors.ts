@@ -7,6 +7,7 @@ import { Threejs_CSS3D_demo } from './ThreeD/Threejs_CSS3D.tsx';
 import { Do_css_perspective_transform } from './ThreeD/CSS_perspective_transform.tsx';
 //import { DoThreejs_textDemoA } from './ThreeD/Threejs_textDemoPortrait.tsx';
 import { DoThreejs_textDemoA } from './ThreeD/Threejs_textDemo.tsx';
+// this gets three.js definitions...       npm i --save-dev @types/three
 import { Quaternion } from 'three';
 // using lib is overkill. use code lifted from ai below...    npm install kalmanjs  //import KalmanFilter from 'kalmanjs';
 
@@ -14,28 +15,27 @@ export interface DisplaySpec {
     text:string, elevation:number
 }
 
-function DoOrientTest() {
+function DoOrientTest(args:DisplaySpec) {
     // addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
     var sensorOrien:any
     var currQuat = new Quaternion() // useRef(new Quaternion())
     var oldElev = 0, oldQuatDisp = ''
-    var kalmanFilter_ref:KalmanFilter
-    var ct = useRef(0)
+    var kalmanFilterA:KalmanFilter
     /** IMPORTANT! crashes occur if dispSpec is an object (versus a string), AND sensorOrien.stop() is never 
      * called when leaving page! page-exit logic is in "return()" thing within useEffect()  */
-    const [dispSpec, setdispSpec] = useState<DisplaySpec>({text:'123456', elevation:0}); 
+    //const [dispSpec, setdispSpec] = useState<DisplaySpec>({text:'123456', elevation:0}); 
     ///useEffect(() => { 
     // run this once:
-        kalmanFilter_ref = KalmanFilter.okDamped()//.slowDamped()
+        kalmanFilterA = KalmanFilter.okDamped()//.slowDamped()
         try {
           // ct.current++ // make sure get here only once
           // addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
           sensorOrien = new AbsoluteOrientationSensor({ frequency: 22, referenceFrame: "device" });
           // setup callback and sensor-driven loop and animation
           sensorOrien.addEventListener("reading", () => {
-              var eulAngles:any = QuatAreFun.quatEuler(sensorOrien.quaternion)
-              currQuat.current = sensorOrien.quaternion
-              var filtElev = Math.round(kalmanFilter_ref.current!.update(eulAngles.pitch))
+              var eulAngles:object = QuatAreFun.quatEuler(sensorOrien.quaternion)
+              currQuat = sensorOrien.quaternion
+              var filtElev = Math.round(kalmanFilterA.update(eulAngles.pitch))
               if (oldElev != filtElev) {
                 setdispSpec( // even if data is same, new object created and redraw triggered
                   { text: filtElev.toString(), elevation: filtElev })
@@ -61,7 +61,7 @@ function DoOrientTest() {
         } catch (ex) { 
           console.log("sensor problem: " + ex)
         }
-    }, []); 
+    //}, []); 
      
     function CSS_border_width(bwidth:number, borderSpec:string) {
         return {border: bwidth + ' ' + borderSpec, 
