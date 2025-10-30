@@ -15,7 +15,7 @@ export interface DisplaySpec {
     text:string, elevation:number
 }
 
-function DoOrientTest(args:DisplaySpec) {
+function DoOrientTest(args:DisplaySpec) : HTMLElement {
     // addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
     var sensorOrien:any
     var currQuat = new Quaternion() // useRef(new Quaternion())
@@ -61,14 +61,14 @@ function DoOrientTest(args:DisplaySpec) {
         } catch (ex) { 
           console.log("sensor problem: " + ex)
         }
-    //}, []); 
+       //}, []); 
      
     function CSS_border_width(bwidth:number, borderSpec:string) {
         return {border: bwidth + ' ' + borderSpec, 
           width:'calc(100% - ' + bwidth + ' * 2)', height:'calc(100% - ' + bwidth + ' * 2.5)'}
     }
     const gr1 = { border:'2px dotted red'}, gr2 = { width:'3em' }
-    return(<div style={ CSS_border_width('9px', 'dotted green') }>
+    return(<div style="CSS_border_width('9px', 'dotted green')" >
       <div style={{ width:'100%', height:'100%'}}>
       {/* no good breaks sensor < DoThreejs_textDemoA dispSpec={dispSpec} /> */}
 
@@ -91,6 +91,7 @@ function DoOrientTest(args:DisplaySpec) {
         <div style={gr1}>quat</div><div id='quat' style={gr1}>-</div>
       </div></div>)
   }
+}
 
 
   

@@ -1,0 +1,60 @@
+
+replaced by Astronomy.SiderealTime(new Date()) + longitude/15;
+import * as Astronomy from 'astronomy-engine'; // Assuming 'astronomy-engine' is the correct module name
+
+
+/**
+ * The Julian Date is a continuous count of days and fractions of a day since noon Universal Time on January 1, 4713 BC.
+ * @param date The Date object for which to calculate the LST (should be in UTC for accurate astronomical calculations).
+ * @param longitude The observer's longitude in degrees. Positive for East, negative for West.
+ * @returns The Local Sidereal Time in hours (0-24).
+ */
+export function getLocalSiderealTime(date: Date, longitude: number): number {
+  // console.log('for hour: ' + date.getHours() + ' utc hours: ' + date.getUTCHours())
+  const jd = getJulianDate(date); 
+  const julianCenturiesSince1_1_1970 = (jd - 2451545.0) / 36525;
+  //                                         ^^^^^^^ julian date 1/1/2000, J2000 epoch start
+  //                                                      ^^^^^ julian century is this many days long
+
+  // Step 3: Calculate the Greenwich Mean Sidereal Time (GMST) in degrees.
+  // This is a widely used empirical formula for GMST in degrees at any given Julian Date.
+  // It includes terms for the mean rotation, and small corrections for precession (T, T^2, T^3 terms).
+  let GreenwichMeanSiderialTime =
+    280.46061837 + // Greenwich Mean Sidereal Time (GMST) at J2000.0
+    360.98564736629 * (jd - 2451545) +
+    // ^^^^^ earthDailySiderialRotationRate
+    //                      ^^^^^^^ julian date 1/1/2000, J2000 epoch start
+    0.000387933 * julianCenturiesSince1_1_1970 * julianCenturiesSince1_1_1970 -
+    // - 0.000387933 * T * T: Correction term for the quadratic component of precession.
+    (julianCenturiesSince1_1_1970 * julianCenturiesSince1_1_1970 * julianCenturiesSince1_1_1970) / 38710000;
+    // - (T * T * T) / 38710000: Correction term for the cubic component of precession.
+  GreenwichMeanSiderialTime = ((GreenwichMeanSiderialTime % 360) + 360) % 360; // Normalize to 0–360 degrees
+  // LST = GMST + Longitude (East longitudes add, West longitudes subtract).
+  const GMST_adjusted_to_longit_degrees = (GreenwichMeanSiderialTime + longitude + 360) % 360;
+  // Adding 360 before the modulo here handles negative results from (GMST + longitude) to ensure a positive result.
+  // 1 hour of sidereal time corresponds to 15 degrees (360 / 24 = 15).
+  const valInHours = GMST_adjusted_to_longit_degrees / 15; // Convert from degrees to hours (0-24)
+  //console.log('siderial time degr: ' + GMST_adjusted_to_longit_degrees + ' in hours: ' + valInHours)
+  return valInHours
+}
+
+
+other way of doing it
+    // /**
+    //  * Calculates the Local Sidereal Time (LST) for a given date and location.
+    //  * @param date - The current date and time (UTC)
+    //  * @param longitude - Observer's longitude in degrees (east positive, west negative)
+    //  * @returns Local Sidereal Time in hours
+    //  */
+    // function getLocalSiderealTime(date: Date, longitude: number): number {
+    //     // Get Greenwich Mean Sidereal Time (GMST) in hours
+    //     const gmst = SiderealTime(date);
+    //     // Convert longitude to hours (15° per hour)
+    //     const longitudeHours = longitude / 15;
+    //     // LST = GMST + longitudeHours (east positive, west negative)
+    //     let lst = gmst + longitudeHours;
+    //     // Normalize to 0–24 hours
+    //     if (lst < 0) lst += 24;
+    //     if (lst >= 24) lst -= 24;
+    //     return lst;
+    // }

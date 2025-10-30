@@ -1,0 +1,135 @@
+
+// Helper function to convert Hour-Minute-Second to Decimal Degrees (for Right Ascension)
+function hmsToDegrees(hours: number, minutes: number): number {
+    const degrees = (hours + minutes / 60 ) * 15; // 1 hour = 15 degrees
+    //console.log('hours: ' + (hours + minutes / 60) + ' degrees: ' + degrees)
+    return degrees
+}
+
+// Helper function to convert Degree-Minute-Second to Decimal Degrees (for Declination)
+function dmsToDegrees(degrees: number, arcminutes: number): number {
+    const sign = degrees < 0 ? -1 : 1;
+    return sign * (Math.abs(degrees) + arcminutes / 60 );
+}
+
+
+
+// Define an interface for Observer Location
+interface ObserverLocation {
+    latitude: number;
+    longitude: number;
+    height?: number; // Corrected: Using 'height' as per astronomy-engine, optional
+}
+
+
+
+
+////this works ok, written by copilot. This is when copilot and genmini failed to use Astronomy engine to do this, but I later
+// found a way to use it. 
+/**
+ * written by Copilot
+ * Converts RA/Dec to Altitude and Azimuth for a given observer and time.
+ * @param raHours - Right Ascension in hours
+ * @param decDegrees - Declination in degrees
+ * @param date - Date and time (UTC)
+ * @param latitude - Observer's latitude in degrees
+ * @param longitude - Observer's longitude in degrees (east positive, west negative)
+ * @returns Altitude and Azimuth in degrees
+ */
+export function getAltAzFromRaDec(
+    raHours: number,
+    decDegrees: number,
+    date: Date,
+    latitude: number,
+    longitude: number
+): { altitude: number; azimuth: number } {
+    // Convert RA to degrees
+    const raDeg = raHours * 15;
+    const decRad = degToRad(decDegrees);
+    const latRad = degToRad(latitude);
+
+    // Calculate Local Sidereal Time (LST) in degrees
+    // const lstHours = getLocalSiderealTime(date, longitude);
+    // chatgpt knew to capitalize SiderealTime() while copilot and gemini did not!
+    const localSiderialTimeHours = Astronomy.SiderealTime(new Date()) + longitude/15;
+    const localSiderialTimeDegr = localSiderialTimeHours * 15;
+
+    // Hour Angle (HA) in degrees
+    let haDeg = localSiderialTimeDegr - raDeg;
+    if (haDeg < 0) haDeg += 360;
+    const haRad = degToRad(haDeg);
+
+    // Altitude calculation
+    const sinAlt =
+        Math.sin(decRad) * Math.sin(latRad) +
+        Math.cos(decRad) * Math.cos(latRad) * Math.cos(haRad);
+    const altitude = radToDeg(Math.asin(sinAlt));
+
+    // Azimuth calculation
+    const cosAz =
+        (Math.sin(decRad) - Math.sin(latRad) * sinAlt) /
+        (Math.cos(latRad) * Math.cos(Math.asin(sinAlt)));
+    let azimuth = radToDeg(Math.acos(cosAz));
+
+    if (Math.sin(haRad) > 0) {
+        azimuth = 360 - azimuth;
+    }
+    return { altitude, azimuth };
+}
+function degToRad(deg: number): number {  return (deg * Math.PI) / 180; }
+function radToDeg(rad: number): number {  return (rad * 180) / Math.PI; }
+
+    ////////////////////
+      const nycLat = 40.6782; const nycLon = -73.9442;    // NYC longitude
+   
+      const current_Sun_Ra_Dec_from_astronomy_engine:{ raHours: number, decDegrees: number } 
+            = getRa_Decl_Sun_using_library();
+      var { altitude, azimuth } = getAltAzFromRaDec(
+            current_Sun_Ra_Dec_from_astronomy_engine.raHours, 
+            current_Sun_Ra_Dec_from_astronomy_engine.decDegrees, 
+            new Date(), nycLat, nycLon);
+      console.log(`From current Sun ra=${current_Sun_Ra_Dec_from_astronomy_engine.raHours}h , decl=${current_Sun_Ra_Dec_from_astronomy_engine.decDegrees}°`);
+      console.log(`  Altitude: ${altitude.toFixed(2)}°`);
+      console.log(`  Azimuth:  ${azimuth.toFixed(2)}°`);
+
+      const raSun = 7.0058;  const decSun = 22.7094; 
+      var { altitude, azimuth } = getAltAzFromRaDec(raSun, decSun, new Date(), nycLat, nycLon);
+      console.log(`From hardcoded Sun ra, decl: \n  Altitude: ${altitude.toFixed(2)}°`);
+      console.log(`  Azimuth:  ${azimuth.toFixed(2)}°`);
+
+    ////////////////////
+
+        /**
+     * replaced this this:
+     * export function getRa_Decl_Sun_using_library(): { objectRaHoursDecimal:number, objectDeclinationDegrees:number } {
+             const equatorial = Astronomy.Equator(Astronomy.Body.Sun, new Date(), new Astronomy.Observer(0, 0, 0), true, false);
+             return { objectRaHoursDecimal: equatorial.ra, objectDeclinationDegrees: equatorial.dec }
+       }
+     * Output matches format used in astro tables and online lookups, using hours/minutes for RA and
+     * degrees/minutes for declination. Does not match the pure decimal hours and degrees values used by npm astronomy-engine.
+     * I have it here to test code using data from astro tables/lookups.
+   
+    static getRa_Decl_of_sun(): CelestialCoordinates {
+        const localSiderialTime = SiderealTime(new Date()) + -74/15;
+        const equatorial = Equator(Body.Sun, localSiderialTime, new Observer(0, 0, 0), true, false);
+        const raHours = Math.floor(equatorial.ra); // Get the whole hours part
+        const raDecimalMinutes = (equatorial.ra - raHours) * 60; // Convert fractional hours to decimal minutes
+
+        // --- Process Declination (Dec) ---
+        const decDegrees = Math.floor(Math.abs(equatorial.dec)); // Get the whole degrees part (handle negative Dec)
+        const decDecimalMinutes = (Math.abs(equatorial.dec) - decDegrees) * 60; // Convert fractional degrees to decimal minutes
+        
+        // Determine the sign for Declination
+        const decSign = equatorial.dec >= 0 ? '+' : '-';
+
+        // Output the formatted values
+        // console.log(`Right Ascension: ${raHours}h ${raDecimalMinutes.toFixed(2)}m`);
+        // console.log(`Declination: ${decSign}${decDegrees}° ${decDecimalMinutes.toFixed(2)}'`);
+        var coords: CelestialCoordinates = {
+            raHours: raHours, raMinutes: raDecimalMinutes, //raDecimalMinutes.toFixed(2),
+            declinatDeg: decDegrees, declinatMinutes: decDecimalMinutes
+        }
+        return coords
+    }
+
+    */
