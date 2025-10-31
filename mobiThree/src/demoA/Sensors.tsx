@@ -1,24 +1,17 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-// project created:   npm create vite@latest sensorThreeA -- --template react-ts
+// project created using:   npm create vite@latest sensorThreeA -- --template react-ts
 import devProjCSS from './devProject.module.css'
-// import { quatEuler, showQuat } from './ThreeD/quaternionsAreFun.ts'
 import { QuatAreFun } from './ThreeD/quaternionsAreFun.ts'
-// import { Threejs_CSS3D_demo } from './ThreeD/Threejs_CSS3D.tsx';
-// import { Do_css_perspective_transform } from './ThreeD/CSS_perspective_transform.tsx';
-//import { DoThreejs_textDemoA } from './ThreeD/Threejs_textDemoPortrait.tsx';
 import { DoThreejs_textDemoA } from './ThreeD/Threejs_textDemo.tsx';
-// npm install --save-dev @types/three
-import { Quaternion } from 'three';
+import { Quaternion } from 'three'; // npm install --save-dev @types/three
 // using lib is overkill. use code lifted from ai below...    npm install kalmanjs  //import KalmanFilter from 'kalmanjs';
 
-export interface DisplaySpec {
-    text:string, elevation:number
-}
+export interface DisplaySpec {    text:string, elevation:number}
 
 function DoOrientTest() {
     // addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
-    var sensorOrien
+    var sensorOrien:AbsoluteOrientationSensor
     var currQuat = useRef(new Quaternion())
     const oldElev = useRef(0), oldQuatDisp = useRef('')
     const kalmanFilter_ref = useRef<KalmanFilter | null>(null) // notation prevents warnings about null
@@ -51,6 +44,10 @@ function DoOrientTest() {
                 document.querySelector('#quat')!.textContent = oldQuatDisp.current
               }
           });
+          sensorOrien.addEventListener("error", (err:any) => { 
+            console.log('sensor error: ' + err.error); 
+            throw new Error(err.error) 
+          })
           sensorOrien.start();
           // NOTE: very important to stop the sensor, else weird crashes occur upon unmount
           // NOTE2: crashes only happen when 
@@ -62,34 +59,53 @@ function DoOrientTest() {
         }
     }, []); 
      
-    function CSS_border_width(bwidth, borderSpec) {
+    function calc_width_usingborder(bwidth: string, borderSpec: string) {
         return {border: bwidth + ' ' + borderSpec, 
           width:'calc(100% - ' + bwidth + ' * 2)', height:'calc(100% - ' + bwidth + ' * 2.5)'}
     }
-    const gr1 = { border:'2px dotted red'}, gr2 = { width:'3em' }
-    return(<div style={ CSS_border_width('9px', 'dotted green') }>
+    //const gr1 = { border:'2px dotted red'}, gr2 = { width:'3em' }
+
+    const style = document.createElement('style');
+    document.head.appendChild(style);
+    style.textContent = 
+    `.gr1 {border: 12px dotted red; padding: 4px; font-weight: bold;}
+     .gr2 {background-color: lightyellow;  margin-left: 10px; } `;
+    document.head.appendChild(style);
+
+    return(<div style={ calc_width_usingborder('9px', 'dotted green') }>
       <div style={{ width:'100%', height:'100%'}}>
-      {/* no good breaks sensor < DoThreejs_textDemoA dispSpec={dispSpec} /> */}
-      < DoThreejs_textDemoA dispSpec={dispSpec} deviceOrienQuatArray={currQuat.current} />
+        < DoThreejs_textDemoA dispSpec={dispSpec} deviceOrienQuatArray={currQuat.current} />
       </div>
       {/* useState causes refresh of this component */}
-      {/* <Do_css_perspective_transform txt={pitchTxt} /> */}
-      {/* not useful: <Threejs_CSS3D_demo /> */}
       {/* NOTE: because of 90 rotate, bottom is right */}
       <div style={{display:'grid', gridTemplateColumns:'1fr 3fr', 
              position:'absolute', bottom:'0px', fontSize: '1.5em',
              // transform:'rotateZ(90deg)' right:'10px', width:'80vw', gap:'10px',
              }} >
-        <div style={gr1}>Yaw</div><div id='yaw' style={{...gr1, ...gr2}}>-</div>
+              {/* ///////////////////////////// */}
+        {/* <div style={gr1}>Yaw</div><div id='yaw' style={{...gr1, ...gr2}}>-</div>
         <div style={gr1}>Pitch</div><div id='pitch' style={{...gr1, ...gr2}}>-</div>
         <div style={gr1}>Roll</div><div id='roll' style={{...gr1, ...gr2}}>-</div>
-        <div style={gr1}>quat</div><div id='quat' style={gr1}>-</div>
+        <div style={gr1}>quat</div><div id='quat' style={gr1}>-</div> */}
+        <div className="gr1">Yaw</div>
+        <div id="yaw" className="gr1 gr2">-</div>
+
+        <div className="gr1">Pitch</div>
+        <div id="pitch" className="gr1 gr2">-</div>
+
+        <div className="gr1">Roll</div>
+        <div id="roll" className="gr1 gr2">-</div>
+
+        <div className="gr1">quat</div>
+        <div id="quat" className="gr1">-</div>
+
       </div></div>)
   }
 
 
   
   class KalmanFilter {
+    q: number;  r: number;  x: number;  p: number;  k: number;
     /**
      * Creates a new KalmanFilter instance with slow damping settings.
      * @returns {KalmanFilter} A new instance of KalmanFilter with predefined parameters.
@@ -111,7 +127,7 @@ function DoOrientTest() {
         p Initial estimation error covariance  
         k Kalman gain  
     */
-    constructor(q, r, x, p, k) {
+    constructor(q: number, r: number, x: number, p: number, k: number) {
         this.q = q; // Process noise covariance
         this.r = r; // Measurement noise covariance
         this.x = x; // Initial state
@@ -119,7 +135,7 @@ function DoOrientTest() {
         this.k = k; // Kalman gain
     }
 
-    update(measurement) {
+    update(measurement: number) : string {
         this.p += this.q; // Prediction step
         this.k = this.p / (this.p + this.r); // Update step
         this.x += this.k * (measurement - this.x);

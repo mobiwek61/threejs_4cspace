@@ -4,11 +4,7 @@ import { DoOrientTest } from './demoA/Sensors.tsx'
 
 function App() {
   return (
-    <>
-      <div>this is sensorThreeA app
-        <DoOrientTest/>
-      </div>
-    </>
+    <DoOrientTest/>
   )
 }
 
