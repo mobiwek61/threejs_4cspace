@@ -16,6 +16,7 @@ const cameraZ = 444
 // that's why useRef not needed to maintain their state.
 var materialA; var materialAA; var materialB; var phongMatl;
 
+/** this component optionally flips itself 90 deg to landscape mode. */
 function DoThreejs_textDemoA(props3) {
     /** !!! useEffect() !!! is React's lifecycle event, like onLoad(). It runs depending on the second arg to useEffect(): 
      *  **** missing: run After every render; 

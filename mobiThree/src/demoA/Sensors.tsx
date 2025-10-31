@@ -5,10 +5,15 @@ import devProjCSS from './devProject.module.css'
 import { QuatAreFun } from './ThreeD/quaternionsAreFun.ts'
 import { DoThreejs_textDemoA } from './ThreeD/Threejs_textDemo.tsx';
 import { Quaternion } from 'three'; // npm install --save-dev @types/three
+import { KalmanFilter } from './util/kalman.ts'
 // using lib is overkill. use code lifted from ai below...    npm install kalmanjs  //import KalmanFilter from 'kalmanjs';
 
 export interface DisplaySpec {    text:string, elevation:number}
 
+/**
+ * useState causes refresh of this component *
+ * @returns 
+ */
 function DoOrientTest() {
     // addEventListener inside useEffect() OR ELSE ADDS hundreds of times!!
     var sensorOrien:AbsoluteOrientationSensor
@@ -65,84 +70,31 @@ function DoOrientTest() {
     }
     //const gr1 = { border:'2px dotted red'}, gr2 = { width:'3em' }
 
-    const style = document.createElement('style');
-    document.head.appendChild(style);
-    style.textContent = 
-    `.gr1 {border: 12px dotted red; padding: 4px; font-weight: bold;}
-     .gr2 {background-color: lightyellow;  margin-left: 10px; } `;
-    document.head.appendChild(style);
-
+    appendStyle(`.gr1 {border: 12px dotted green; padding: 4px; font-weight: bold;}
+      .gr2 {background-color: lightyellow;  margin-left: 10px; } `)
+    
     return(<div style={ calc_width_usingborder('9px', 'dotted green') }>
       <div style={{ width:'100%', height:'100%'}}>
         < DoThreejs_textDemoA dispSpec={dispSpec} deviceOrienQuatArray={currQuat.current} />
       </div>
-      {/* useState causes refresh of this component */}
-      {/* NOTE: because of 90 rotate, bottom is right */}
       <div style={{display:'grid', gridTemplateColumns:'1fr 3fr', 
-             position:'absolute', bottom:'0px', fontSize: '1.5em',
-             // transform:'rotateZ(90deg)' right:'10px', width:'80vw', gap:'10px',
-             }} >
-              {/* ///////////////////////////// */}
-        {/* <div style={gr1}>Yaw</div><div id='yaw' style={{...gr1, ...gr2}}>-</div>
-        <div style={gr1}>Pitch</div><div id='pitch' style={{...gr1, ...gr2}}>-</div>
-        <div style={gr1}>Roll</div><div id='roll' style={{...gr1, ...gr2}}>-</div>
-        <div style={gr1}>quat</div><div id='quat' style={gr1}>-</div> */}
-        <div className="gr1">Yaw</div>
-        <div id="yaw" className="gr1 gr2">-</div>
+             position:'absolute', bottom:'0px', fontSize: '1.5em'}} >
 
-        <div className="gr1">Pitch</div>
-        <div id="pitch" className="gr1 gr2">-</div>
-
-        <div className="gr1">Roll</div>
-        <div id="roll" className="gr1 gr2">-</div>
-
-        <div className="gr1">quat</div>
-        <div id="quat" className="gr1">-</div>
+        <div className="gr1">Yaw</div><div id="yaw" className="gr1 gr2">-</div>
+        <div className="gr1">Pitch</div><div id="pitch" className="gr1 gr2">-</div>
+        <div className="gr1">Roll</div><div id="roll" className="gr1 gr2">-</div>
+        <div className="gr1">quat</div><div id="quat" className="gr1">-</div>
 
       </div></div>)
   }
 
-
-  
-  class KalmanFilter {
-    q: number;  r: number;  x: number;  p: number;  k: number;
-    /**
-     * Creates a new KalmanFilter instance with slow damping settings.
-     * @returns {KalmanFilter} A new instance of KalmanFilter with predefined parameters.
-     */
-    static slowDamped() { return new KalmanFilter(.004, 11, 0, 1, 0.05) }
-    static okDamped() { return new KalmanFilter(1, 33, 0, 1, 0.05); }
-
-    /**  code and descripition from AI
-      Parameters Explanation  
-      q (Process Noise Covariance)  
-        This controls how much the filter trusts the prediction model.  
-        A low value means the filter assumes little change between measurements.  
-        A high value allows the filter to be more adaptive to changes.  
-      r (Measurement Noise Covariance)  
-        This defines how much noise the sensor readings are expected to have.  
-        A low value makes the filter trust the sensor data more.  
-        A high value makes the filter smooth out noisy measurements aggressively.  
-        x Initial state  
-        p Initial estimation error covariance  
-        k Kalman gain  
-    */
-    constructor(q: number, r: number, x: number, p: number, k: number) {
-        this.q = q; // Process noise covariance
-        this.r = r; // Measurement noise covariance
-        this.x = x; // Initial state
-        this.p = p; // Initial estimation error covariance
-        this.k = k; // Kalman gain
-    }
-
-    update(measurement: number) : string {
-        this.p += this.q; // Prediction step
-        this.k = this.p / (this.p + this.r); // Update step
-        this.x += this.k * (measurement - this.x);
-        this.p *= (1 - this.k);
-        return this.x.toFixed(0);
-    }
-}
+  /** workaround to add css class to a tsx without needing css file */
+  function appendStyle(styleText: string) {
+      const style = document.createElement('style');
+      document.head.appendChild(style);
+      style.textContent = styleText
+      document.head.appendChild(style);
+  }
   
   // function quaternionToPitchYaw(quaternionIn) { // Copilot!
   //   const [ x, y, z, w ] = quaternionIn;
